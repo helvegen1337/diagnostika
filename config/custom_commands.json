@@ -1,0 +1,16 @@
+{
+  "Пользовательские команды": {
+    "Мои скрипты": {
+      "Проверить статус сервисов": "systemctl status nginx mysql redis",
+      "Очистить кэш": "sync && echo 3 > /proc/sys/vm/drop_caches",
+      "Проверить SSL сертификаты": "find /etc/ssl/certs -name '*.crt' -exec openssl x509 -in {} -text -noout \\;",
+      "Мониторинг логов в реальном времени": "tail -f /var/log/nginx/access.log"
+    },
+    "Быстрые проверки": {
+      "Проверить свободное место": "df -h | grep -E '^/dev'",
+      "Проверить память": "free -h && echo '---' && vmstat 1 3",
+      "Проверить нагрузку": "uptime && echo '---' && top -bn1 | head -5",
+      "Проверить сеть": "ip addr show && echo '---' && ping -c 3 8.8.8.8"
+    }
+  }
+} 

@@ -1,0 +1,95 @@
+# Diagnostika v2.0 - .gitignore
+
+# Временные файлы
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Логи
+*.log
+logs/
+
+# Кэш Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Виртуальные окружения
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Конфигурационные файлы с секретами
+.env
+.env.local
+.env.production
+config/secrets.json
+config/local.json
+
+# Резервные копии
+*.bak
+*.backup
+*.old
+
+# Тестовые файлы
+test_*
+*_test.py
+tests/
+
+# Документация сборки
+docs/_build/
+docs/build/
+
+# Пакеты
+*.tar.gz
+*.zip
+*.rar
+
+# Локальные настройки
+local_settings.py
+settings_local.py
+
+# Базы данных
+*.db
+*.sqlite
+*.sqlite3
+
+# Кэш браузера
+.cache/
+cache/
+
+# Временные директории
+tmp/
+temp/ 
