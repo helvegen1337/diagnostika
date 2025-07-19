@@ -487,18 +487,4 @@ alias menu='diagnostika'
 # Экспортируем функцию для подоболочек
 export -f diagnostika
 
-echo "✅ Diagnostika v2.0 Bash функция загружена!"
-echo "Доступные команды:"
-echo "  diagnostika    - Показать главное меню"
-echo "  diag           - То же самое (сокращение)"
-echo "  help           - То же самое"
-echo "  menu           - То же самое"
-echo ""
-echo "Быстрый доступ:"
-echo "  diag network   - Диагностика сети"
-echo "  diag system    - Системная информация"
-echo "  diag storage   - Анализ хранилища"
-echo "  diag security  - Проверка безопасности"
-echo "  diag performance - Мониторинг производительности"
-echo ""
-echo "Использование: Просто введите 'diag' или 'help' для начала!" 
+ 

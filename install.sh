@@ -557,7 +557,7 @@ export -f diagnostika
 export -f diagnostika_linux
 export -f diagnostika_windows
 
-echo "✅ Diagnostika v2.0 загружена!"
+
 echo "Доступные команды:"
 echo "  diagnostika    - Показать главное меню"
 echo "  diag           - То же самое (сокращение)"
