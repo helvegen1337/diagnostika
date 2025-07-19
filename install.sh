@@ -53,10 +53,6 @@ mkdir -p "$INSTALL_DIR"
 echo -e "${BLUE}📋 Копируем файлы...${NC}"
 cp console_function.sh "$INSTALL_DIR/"
 cp diagnostika_v2.py "$INSTALL_DIR/"
-cp -r config "$INSTALL_DIR/" 2>/dev/null || true
-cp -r modules "$INSTALL_DIR/" 2>/dev/null || true
-cp -r plugins "$INSTALL_DIR/" 2>/dev/null || true
-cp -r core "$INSTALL_DIR/" 2>/dev/null || true
 
 # Создаем основной скрипт
 cat > "$INSTALL_DIR/diagnostika.sh" << 'EOF'

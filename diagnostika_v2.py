@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """
 Linux Server Diagnostics TUI Tool v2.0
-Модульная архитектура для легкого расширения функционала
+Упрощенная версия без модульной системы
 """
 
 import os
 import sys
-import json
 import subprocess
 import pyperclip
 from typing import Dict, Any, List
@@ -22,9 +21,6 @@ from rich import box
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.console import Group
 
-# Импортируем нашу модульную систему
-from core.module_manager import ModuleManager
-
 # Инициализация Rich консоли
 console = Console()
 
@@ -32,7 +28,7 @@ console = Console()
 CONFIG = {
     "title": "Диагностика Linux Серверов v2.0",
     "version": "2.0",
-    "author": "Модульная система диагностики",
+    "author": "Упрощенная система диагностики",
     "colors": {
         "primary": "cyan",
         "secondary": "yellow", 
@@ -44,14 +40,102 @@ CONFIG = {
     }
 }
 
+# Встроенные команды диагностики
+DIAGNOSTIC_COMMANDS = {
+    "🌐 Диагностика сети": {
+        "Сетевые интерфейсы": "ip addr show",
+        "Сетевые соединения": "ss -tuln",
+        "Таблица маршрутизации": "ip route show",
+        "Конфигурация DNS": "cat /etc/resolv.conf",
+        "Статистика сети": "ss -s",
+        "Тест пинга": "ping -c 3 8.8.8.8",
+        "Трассировка маршрута": "traceroute 8.8.8.8",
+        "Тест пропускной способности": "echo 'Тест пропускной способности: iperf3 -c speedtest.server.com'"
+    },
+    "⚙️ Системная информация": {
+        "Информация о системе": "uname -a",
+        "Информация о процессоре": "lscpu",
+        "Информация о памяти": "free -h",
+        "Использование дисков": "df -h",
+        "Загрузка системы": "uptime",
+        "Топ процессов": "ps aux --sort=-%cpu | head -10",
+        "Статус служб": "systemctl list-units --type=service --state=running | head -10",
+        "Системные журналы": "journalctl -n 20 --no-pager",
+        "Версия ядра": "uname -r"
+    },
+    "💾 Анализ хранилища": {
+        "Разделы дисков": "lsblk",
+        "Использование дисков": "df -h",
+        "Использование inode": "df -i",
+        "Точки монтирования": "mount | column -t",
+        "Ввод-вывод дисков": "iostat -x 1 3",
+        "Большие файлы": "find / -type f -size +100M 2>/dev/null | head -10",
+        "Здоровье дисков": "smartctl -a /dev/sda 2>/dev/null || echo 'Smartctl недоступен'",
+        "Статус LVM": "lvs 2>/dev/null || echo 'LVM недоступен'"
+    },
+    "🔒 Проверка безопасности": {
+        "Открытые порты": "netstat -tuln",
+        "Службы прослушивания": "ss -tuln",
+        "Пользовательские учетные записи": "cat /etc/passwd | grep -v nologin",
+        "Пользователи sudo": "grep -Po '^sudo.+:\K.*$' /etc/group | tr ',' '\n'",
+        "Неудачные входы": "journalctl -u ssh | grep 'Failed password' | tail -10",
+        "Конфигурация SSH": "grep -E '^(PermitRootLogin|PasswordAuthentication|Port)' /etc/ssh/sshd_config",
+        "Статус брандмауэра": "iptables -L -n 2>/dev/null || ufw status 2>/dev/null || echo 'Брандмауэр не обнаружен'",
+        "Статус SELinux": "sestatus 2>/dev/null || echo 'SELinux недоступен'"
+    },
+    "📊 Мониторинг производительности": {
+        "Использование процессора": "top -bn1 | grep 'Cpu(s)'",
+        "Использование памяти": "free -h",
+        "Загрузка системы": "uptime",
+        "Топ процессов": "ps aux --sort=-%cpu | head -10",
+        "Ожидание ввода-вывода": "iostat -x 1 3",
+        "Использование сети": "ss -s",
+        "Ввод-вывод дисков": "iotop -b -n 1 2>/dev/null || iostat -x 1 3",
+        "Системные ресурсы": "vmstat 1 3"
+    },
+    "🐳 Статус Docker": {
+        "Версия Docker": "docker --version",
+        "Запущенные контейнеры": "docker ps",
+        "Все контейнеры": "docker ps -a",
+        "Образы Docker": "docker images",
+        "Информация о системе Docker": "docker system df",
+        "Сети Docker": "docker network ls",
+        "Тома Docker": "docker volume ls",
+        "Журналы Docker": "docker logs --tail 20 $(docker ps -q | head -1) 2>/dev/null || echo 'Нет запущенных контейнеров'"
+    },
+    "🗄️ Статус баз данных": {
+        "Статус MySQL": "systemctl status mysql 2>/dev/null || systemctl status mysqld 2>/dev/null || echo 'MySQL не установлен'",
+        "Статус PostgreSQL": "systemctl status postgresql 2>/dev/null || echo 'PostgreSQL не установлен'",
+        "Статус MongoDB": "systemctl status mongod 2>/dev/null || echo 'MongoDB не установлен'",
+        "Статус Redis": "systemctl status redis 2>/dev/null || echo 'Redis не установлен'",
+        "Статус Elasticsearch": "systemctl status elasticsearch 2>/dev/null || echo 'Elasticsearch не установлен'",
+        "Статус InfluxDB": "systemctl status influxdb 2>/dev/null || echo 'InfluxDB не установлен'"
+    },
+    "🌍 Веб-сервисы": {
+        "Статус Apache": "systemctl status apache2 2>/dev/null || systemctl status httpd 2>/dev/null || echo 'Apache не установлен'",
+        "Статус Nginx": "systemctl status nginx 2>/dev/null || echo 'Nginx не установлен'",
+        "Статус PHP-FPM": "systemctl status php-fpm 2>/dev/null || systemctl status php8.1-fpm 2>/dev/null || echo 'PHP-FPM не установлен'",
+        "Статус Node.js": "node --version 2>/dev/null || echo 'Node.js не установлен'",
+        "Статус PM2": "pm2 status 2>/dev/null || echo 'PM2 не установлен'",
+        "Статус Supervisor": "supervisorctl status 2>/dev/null || echo 'Supervisor не установлен'"
+    },
+    "💿 Статус резервного копирования": {
+        "Статус cron": "systemctl status cron 2>/dev/null || systemctl status crond 2>/dev/null || echo 'Cron не установлен'",
+        "Задачи cron": "crontab -l 2>/dev/null || echo 'Нет задач cron'",
+        "Статус rsync": "which rsync && echo 'rsync доступен' || echo 'rsync не установлен'",
+        "Статус tar": "which tar && echo 'tar доступен' || echo 'tar не установлен'",
+        "Статус dd": "which dd && echo 'dd доступен' || echo 'dd не установлен'",
+        "Статус borg": "which borg && echo 'borg доступен' || echo 'borg не установлен'"
+    }
+}
+
 
 class DiagnosticsTUIv2:
-    """Улучшенная версия TUI с модульной архитектурой"""
+    """Упрощенная версия TUI без модульной архитектуры"""
     
     def __init__(self):
         self.console = console
-        self.module_manager = ModuleManager()
-        self.current_menu = {}
+        self.current_menu = DIAGNOSTIC_COMMANDS
         self.menu_stack = []
         self.selected_index = 0
         self.command_history = []
@@ -59,7 +143,7 @@ class DiagnosticsTUIv2:
     def show_header(self):
         """Отображает заголовок приложения"""
         title = f" {CONFIG['title']} v{CONFIG['version']} "
-        subtitle = f" Загружено модулей: {len(self.module_manager.modules)} "
+        subtitle = f" Категорий: {len(self.current_menu)} "
         
         header = Panel(
             Align.center(Group(
@@ -94,7 +178,7 @@ class DiagnosticsTUIv2:
             for i, (key, value) in enumerate(menu_items):
                 if isinstance(value, dict):
                     item_type = "📁 Подменю"
-                    description = f"{len(value)} подкатегорий"
+                    description = f"{len(value)} команд"
                 else:
                     item_type = "▶ Команда"
                     description = "Выполнить команду"
@@ -106,7 +190,7 @@ class DiagnosticsTUIv2:
             
             # Справка по навигации
             help_text = Text(
-                "Навигация: W/S или ↑/↓ - Выбор | Enter - Выполнить | Q - Выход | M - Модули | H - История",
+                "Навигация: W/S или ↑/↓ - Выбор | Enter - Выполнить | Q - Выход | H - История",
                 style=f"dim {CONFIG['colors']['info']}"
             )
             self.console.print(help_text)
@@ -117,9 +201,6 @@ class DiagnosticsTUIv2:
                 
                 if key == 'q':
                     return
-                elif key == 'm':
-                    self.show_modules_menu()
-                    continue
                 elif key == 'h':
                     self.show_command_history()
                     continue
@@ -181,7 +262,6 @@ class DiagnosticsTUIv2:
         options_table.add_row("1", "Выполнить локально (если поддерживается)")
         options_table.add_row("2", "Скопировать в буфер обмена снова")
         options_table.add_row("3", "Вернуться в меню")
-        options_table.add_row("4", "Добавить в пользовательские команды")
         options_table.add_row("Q", "Выход")
         
         self.console.print(options_table)
@@ -201,9 +281,6 @@ class DiagnosticsTUIv2:
                     self.console.print(f"[{CONFIG['colors']['error']}]✗ Не удалось скопировать в буфер обмена: {e}[/{CONFIG['colors']['error']}]")
             elif choice == '3':
                 return
-            elif choice == '4':
-                self._add_to_custom_commands(command, description)
-                break
             elif choice == 'q':
                 sys.exit(0)
     
@@ -243,88 +320,6 @@ class DiagnosticsTUIv2:
         
         self.console.input("Нажмите Enter для продолжения...")
     
-    def _add_to_custom_commands(self, command: str, description: str):
-        """Добавляет команду в пользовательские команды"""
-        try:
-            if "custom" in self.module_manager.modules:
-                custom_module = self.module_manager.modules["custom"]
-                if hasattr(custom_module, 'add_command'):
-                    category = Prompt.ask("Введите категорию", default="Мои команды")
-                    subcategory = Prompt.ask("Введите подкатегорию", default="Добавленные")
-                    
-                    if custom_module.add_command(category, subcategory, description, command):
-                        self.console.print(f"[{CONFIG['colors']['success']}]✓ Команда добавлена в пользовательские команды[/{CONFIG['colors']['success']}]")
-                    else:
-                        self.console.print(f"[{CONFIG['colors']['error']}]✗ Не удалось добавить команду[/{CONFIG['colors']['error']}]")
-                else:
-                    self.console.print(f"[{CONFIG['colors']['error']}]Модуль пользовательских команд не поддерживает добавление[/{CONFIG['colors']['error']}]")
-            else:
-                self.console.print(f"[{CONFIG['colors']['error']}]Модуль пользовательских команд не загружен[/{CONFIG['colors']['error']}]")
-        except Exception as e:
-            self.console.print(f"[{CONFIG['colors']['error']}]Ошибка добавления команды: {e}[/{CONFIG['colors']['error']}]")
-        
-        self.console.input("Нажмите Enter для продолжения...")
-    
-    def show_modules_menu(self):
-        """Показывает меню управления модулями"""
-        self.console.clear()
-        self.show_header()
-        
-        modules_info = self.module_manager.get_module_info()
-        
-        table = Table(
-            title=" Управление модулями ",
-            show_header=True,
-            box=box.ROUNDED,
-            style=f"bold {CONFIG['colors']['primary']}"
-        )
-        
-        table.add_column("Модуль", style="white")
-        table.add_column("Статус", style="white")
-        table.add_column("Команд", style="white")
-        table.add_column("Описание", style="dim")
-        
-        for module in modules_info:
-            status = "✅ Включен" if module["enabled"] else "❌ Отключен"
-            table.add_row(
-                f"{module['icon']} {module['name']}",
-                status,
-                str(module["commands_count"]),
-                module["description"]
-            )
-        
-        self.console.print(table)
-        
-        help_text = Text(
-            "E - Включить модуль | D - Отключить модуль | R - Перезагрузить | Enter - Вернуться",
-            style=f"dim {CONFIG['colors']['info']}"
-        )
-        self.console.print(help_text)
-        
-        while True:
-            choice = self.console.input("Выберите действие: ").lower()
-            
-            if choice == 'e':
-                module_id = Prompt.ask("Введите ID модуля для включения")
-                if self.module_manager.enable_module(module_id):
-                    self.console.print(f"[{CONFIG['colors']['success']}]✓ Модуль {module_id} включен[/{CONFIG['colors']['success']}]")
-                else:
-                    self.console.print(f"[{CONFIG['colors']['error']}]✗ Не удалось включить модуль {module_id}[/{CONFIG['colors']['error']}]")
-                break
-            elif choice == 'd':
-                module_id = Prompt.ask("Введите ID модуля для отключения")
-                if self.module_manager.disable_module(module_id):
-                    self.console.print(f"[{CONFIG['colors']['success']}]✓ Модуль {module_id} отключен[/{CONFIG['colors']['success']}]")
-                else:
-                    self.console.print(f"[{CONFIG['colors']['error']}]✗ Не удалось отключить модуль {module_id}[/{CONFIG['colors']['error']}]")
-                break
-            elif choice == 'r':
-                self.module_manager.reload_modules()
-                self.console.print(f"[{CONFIG['colors']['success']}]✓ Модули перезагружены[/{CONFIG['colors']['success']}]")
-                break
-            elif choice in ['', 'enter']:
-                break
-    
     def show_command_history(self):
         """Показывает историю выполненных команд"""
         self.console.clear()
@@ -359,14 +354,7 @@ class DiagnosticsTUIv2:
     def run(self):
         """Запускает TUI приложение"""
         try:
-            # Загружаем команды из всех модулей
-            all_commands = self.module_manager.get_all_commands()
-            
-            if not all_commands:
-                self.console.print(f"[{CONFIG['colors']['error']}]Не удалось загрузить команды из модулей[/{CONFIG['colors']['error']}]")
-                return
-            
-            self.show_menu(all_commands, "Главное меню")
+            self.show_menu(self.current_menu, "Главное меню")
             
         except KeyboardInterrupt:
             self.console.print(f"\n[{CONFIG['colors']['info']}]До свидания![/{CONFIG['colors']['info']}]")
