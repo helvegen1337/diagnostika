@@ -53,7 +53,7 @@ function Diagnostika-Windows {
             Write-Host "0. Back to main menu" -ForegroundColor Yellow
             Write-Host "q. Exit Diagnostika" -ForegroundColor Yellow
             Write-Host ""
-            $choice = Read-Host "Select command (1-8, 0, q)"
+            $choice = Read-Host 'Select command (1-8, 0, q)'
             
             switch ($choice) {
                 "1" { 
@@ -153,7 +153,7 @@ function Diagnostika-Windows {
             Write-Host "0. Back to main menu" -ForegroundColor Yellow
             Write-Host "q. Exit Diagnostika" -ForegroundColor Yellow
             Write-Host ""
-            $choice = Read-Host "Select command (1-9, 0, q)"
+            $choice = Read-Host 'Select command (1-9, 0, q)'
             
             switch ($choice) {
                 "1" { 
@@ -261,7 +261,7 @@ function Diagnostika-Windows {
             Write-Host "0. Back to main menu" -ForegroundColor Yellow
             Write-Host "q. Exit Diagnostika" -ForegroundColor Yellow
             Write-Host ""
-            $choice = Read-Host "Select command (1-8, 0, q)"
+            $choice = Read-Host 'Select command (1-8, 0, q)'
             
             switch ($choice) {
                 "1" { 
@@ -360,7 +360,7 @@ function Diagnostika-Windows {
             Write-Host "0. Back to main menu" -ForegroundColor Yellow
             Write-Host "q. Exit Diagnostika" -ForegroundColor Yellow
             Write-Host ""
-            $choice = Read-Host "Select command (1-8, 0, q)"
+            $choice = Read-Host 'Select command (1-8, 0, q)'
             
             switch ($choice) {
                 "1" { 

@@ -78,7 +78,7 @@ $UniversalPath = "$env:USERPROFILE\.diagnostika\powershell_universal.ps1"
 if (Test-Path $UniversalPath) {
     . $UniversalPath
 } else {
-    Write-Host "❌ Ошибка: Файл powershell_universal.ps1 не найден" -ForegroundColor Red
+    Write-Host "Error: Файл powershell_universal.ps1 не найден" -ForegroundColor Red
     Write-Host "Попробуйте переустановить Diagnostika" -ForegroundColor Yellow
 }
 
@@ -86,28 +86,6 @@ if (Test-Path $UniversalPath) {
 Set-Alias -Name diag -Value Diagnostika
 Set-Alias -Name help -Value Diagnostika
 Set-Alias -Name menu -Value Diagnostika
-
-# Функция для показа справки (вызывается только при явном запросе)
-function Show-DiagnostikaHelp {
-    Write-Host "✅ Diagnostika v2.0 PowerShell функция загружена!" -ForegroundColor Green
-    Write-Host "Доступные команды:" -ForegroundColor Yellow
-    Write-Host "  Diagnostika    - Показать главное меню" -ForegroundColor White
-    Write-Host "  diag           - То же самое (сокращение)" -ForegroundColor White
-    Write-Host "  help           - То же самое" -ForegroundColor White
-    Write-Host "  menu           - То же самое" -ForegroundColor White
-    Write-Host ""
-    Write-Host "Быстрый доступ:" -ForegroundColor Yellow
-    Write-Host "  diag network   - Диагностика сети" -ForegroundColor White
-    Write-Host "  diag system    - Системная информация" -ForegroundColor White
-    Write-Host "  diag storage   - Анализ хранилища" -ForegroundColor White
-    Write-Host "  diag security  - Проверка безопасности" -ForegroundColor White
-    Write-Host "  diag performance - Мониторинг производительности" -ForegroundColor White
-    Write-Host ""
-    Write-Host "Использование: Просто введите 'diag' или 'help' для начала!" -ForegroundColor Green
-}
-
-# Создаем алиас для справки
-Set-Alias -Name diagnostika-help -Value Show-DiagnostikaHelp
 '@
 
 # Сохраняем скрипт
