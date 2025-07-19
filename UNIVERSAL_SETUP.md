@@ -19,7 +19,7 @@
 
 1. **Скачайте установщик:**
    ```bash
-   wget https://raw.githubusercontent.com/your-repo/diagnostika/main/install.sh
+   wget https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.sh
    ```
 
 2. **Запустите установку:**
@@ -44,7 +44,7 @@
 
 1. **Скачайте установщик:**
    ```powershell
-   Invoke-WebRequest -Uri "https://raw.githubusercontent.com/your-repo/diagnostika/main/install.ps1" -OutFile "install.ps1"
+   Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.ps1" -OutFile "install.ps1"
    ```
 
 2. **Запустите установку:**
@@ -165,13 +165,13 @@ mc/
 #### Linux/Unix:
 ```bash
 # Скачать и запустить установщик
-curl -sSL https://raw.githubusercontent.com/your-repo/diagnostika/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.sh | bash
 ```
 
 #### PowerShell:
 ```powershell
 # Скачать и запустить установщик
-Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/your-repo/diagnostika/main/install.ps1" -UseBasicParsing).Content
+Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.ps1" -UseBasicParsing).Content
 ```
 
 ### Ручная установка:

@@ -19,10 +19,10 @@
 
 ```bash
 # Скачать и установить одной командой
-curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.sh | bash
 
 # Или вручную
-wget https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.sh
+wget https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.sh
 chmod +x install.sh
 ./install.sh
 ```
@@ -31,10 +31,10 @@ chmod +x install.sh
 
 ```powershell
 # Скачать и установить одной командой
-Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.ps1" -UseBasicParsing).Content
+Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.ps1" -UseBasicParsing).Content
 
 # Или вручную
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.ps1" -OutFile "install.ps1"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.ps1" -OutFile "install.ps1"
 .\install.ps1
 ```
 
@@ -145,13 +145,13 @@ diagnostika/
 #### Linux/Unix:
 ```bash
 # Скачать и запустить установщик
-curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.sh | bash
 ```
 
 #### PowerShell:
 ```powershell
 # Скачать и запустить установщик
-Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.ps1" -UseBasicParsing).Content
+Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.ps1" -UseBasicParsing).Content
 ```
 
 ### Ручная установка:

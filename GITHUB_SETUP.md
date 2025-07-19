@@ -69,7 +69,7 @@ git push origin main
 curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.sh | bash
 
 # Стало:
-curl -sSL https://raw.githubusercontent.com/your-actual-username/diagnostika/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.sh | bash
 ```
 
 #### В файле `UNIVERSAL_SETUP.md`:
@@ -81,10 +81,10 @@ curl -sSL https://raw.githubusercontent.com/your-actual-username/diagnostika/mai
 
 ```bash
 # Проверка Linux установщика
-curl -I https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.sh
+curl -I https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.sh
 
 # Проверка PowerShell установщика
-curl -I https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.ps1
+curl -I https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.ps1
 ```
 
 ### 5. Тестирование установки
@@ -92,13 +92,13 @@ curl -I https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install
 #### Linux/Unix:
 ```bash
 # Тест установки
-curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.sh | bash
 ```
 
 #### PowerShell:
 ```powershell
 # Тест установки
-Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.ps1" -UseBasicParsing).Content
+Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.ps1" -UseBasicParsing).Content
 ```
 
 ## 📁 Структура репозитория
@@ -126,13 +126,13 @@ diagnostika/
 ## 🔗 Полезные ссылки
 
 ### Для пользователей:
-- **Linux/Unix:** `curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.sh | bash`
-- **PowerShell:** `Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.ps1" -UseBasicParsing).Content`
+- **Linux/Unix:** `curl -sSL https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.sh | bash`
+- **PowerShell:** `Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.ps1" -UseBasicParsing).Content`
 
 ### Для разработчиков:
-- **Репозиторий:** `https://github.com/YOUR_USERNAME/diagnostika`
-- **Issues:** `https://github.com/YOUR_USERNAME/diagnostika/issues`
-- **Releases:** `https://github.com/YOUR_USERNAME/diagnostika/releases`
+- **Репозиторий:** `https://github.com/helvegen1337/diagnostika`
+- **Issues:** `https://github.com/helvegen1337/diagnostika/issues`
+- **Releases:** `https://github.com/helvegen1337/diagnostika/releases`
 
 ## 🎯 Дополнительные настройки
 
@@ -195,10 +195,10 @@ jobs:
 
 ```bash
 # Linux/Unix
-curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.sh | bash
 
 # PowerShell
-Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.ps1" -UseBasicParsing).Content
+Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.ps1" -UseBasicParsing).Content
 ```
 
 **🎉 Поздравляем! Diagnostika v2.0 готова к использованию!** 

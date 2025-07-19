@@ -33,10 +33,10 @@ git push origin main
 ### 4. Проверьте работу
 ```bash
 # Linux
-curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.sh | bash
 
 # PowerShell
-Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/YOUR_USERNAME/diagnostika/main/install.ps1" -UseBasicParsing).Content
+Invoke-Expression (Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/install.ps1" -UseBasicParsing).Content
 ```
 
 ## 🎯 Готово!
