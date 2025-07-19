@@ -118,13 +118,13 @@ diagnostika() {
     # Вызываем соответствующую функцию в зависимости от ОС
     case "$OS_TYPE" in
         "linux"|"macos")
-            diagnostika_linux "$@"
+            diagnostika_linux "$category"
             ;;
         "windows")
-            diagnostika_windows "$@"
+            diagnostika_windows "$category"
             ;;
         *)
-            diagnostika_linux "$@"
+            diagnostika_linux "$category"
             ;;
     esac
 }
