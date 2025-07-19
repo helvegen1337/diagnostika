@@ -47,10 +47,26 @@ if (!(Test-Path $InstallDir)) {
     New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
 }
 
-# Копируем файлы
-Write-ColorOutput "📋 Копируем файлы..." $Blue
-Copy-Item "powershell_universal.ps1" "$InstallDir\" -Force
-Copy-Item "diagnostika_v2.py" "$InstallDir\" -Force
+# Скачиваем файлы с GitHub
+Write-ColorOutput "📋 Скачиваем файлы с GitHub..." $Blue
+
+Write-ColorOutput "📥 Скачиваем powershell_universal.ps1..." $Blue
+try {
+    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/powershell_universal.ps1" -OutFile "$InstallDir\powershell_universal.ps1" -UseBasicParsing
+} catch {
+    Write-ColorOutput "❌ Ошибка: Не удалось скачать powershell_universal.ps1" $Red
+    exit 1
+}
+
+Write-ColorOutput "📥 Скачиваем diagnostika_v2.py..." $Blue
+try {
+    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/diagnostika_v2.py" -OutFile "$InstallDir\diagnostika_v2.py" -UseBasicParsing
+} catch {
+    Write-ColorOutput "❌ Ошибка: Не удалось скачать diagnostika_v2.py" $Red
+    exit 1
+}
+
+Write-ColorOutput "✅ Все файлы успешно скачаны" $Green
 
 # Создаем основной скрипт PowerShell
 $DiagnostikaScript = @'

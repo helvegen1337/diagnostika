@@ -50,9 +50,27 @@ echo -e "${BLUE}📁 Создаем директорию: ${INSTALL_DIR}${NC}"
 mkdir -p "$INSTALL_DIR"
 
 # Копируем файлы
-echo -e "${BLUE}📋 Копируем файлы...${NC}"
-cp console_function.sh "$INSTALL_DIR/"
-cp diagnostika_v2.py "$INSTALL_DIR/"
+echo -e "${BLUE}📋 Скачиваем файлы с GitHub...${NC}"
+
+# Скачиваем необходимые файлы с GitHub
+echo -e "${BLUE}📥 Скачиваем console_function.sh...${NC}"
+curl -sSL "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/console_function.sh" -o "$INSTALL_DIR/console_function.sh"
+
+echo -e "${BLUE}📥 Скачиваем diagnostika_v2.py...${NC}"
+curl -sSL "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/diagnostika_v2.py" -o "$INSTALL_DIR/diagnostika_v2.py"
+
+# Проверяем, что файлы скачались успешно
+if [ ! -f "$INSTALL_DIR/console_function.sh" ]; then
+    echo -e "${RED}❌ Ошибка: Не удалось скачать console_function.sh${NC}"
+    exit 1
+fi
+
+if [ ! -f "$INSTALL_DIR/diagnostika_v2.py" ]; then
+    echo -e "${RED}❌ Ошибка: Не удалось скачать diagnostika_v2.py${NC}"
+    exit 1
+fi
+
+echo -e "${GREEN}✅ Все файлы успешно скачаны${NC}"
 
 # Создаем основной скрипт
 cat > "$INSTALL_DIR/diagnostika.sh" << 'EOF'
