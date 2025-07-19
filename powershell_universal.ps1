@@ -2,10 +2,13 @@
 # Скопируйте и вставьте этот блок в любую PowerShell сессию
 
 function Diagnostika {
-    param([string]$Category = "")
+    param([Parameter(ValueFromRemainingArguments=$true)][string[]]$Category)
+    
+    # Объединяем все аргументы в одну строку
+    $CategoryString = $Category -join " "
     
     # Главное меню
-    if (-not $Category) {
+    if (-not $CategoryString) {
         Write-Host "╔══════════════════════════════════════════════════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
         Write-Host "║                                   Diagnostika v2.0 - PowerShell Edition                                ║" -ForegroundColor Cyan
         Write-Host "╚══════════════════════════════════════════════════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
@@ -36,7 +39,7 @@ function Diagnostika {
         return
     }
     
-    switch ($Category.ToLower()) {
+    switch ($CategoryString.ToLower()) {
         "network" {
             Write-Host "╔══════════════════════════════════════════════════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
             Write-Host "║                                        ДИАГНОСТИКА СЕТИ                                             ║" -ForegroundColor Cyan
@@ -271,7 +274,7 @@ function Diagnostika {
             }
         }
         default {
-            Write-Host "Неизвестная категория: $Category" -ForegroundColor Red
+            Write-Host "Неизвестная категория: $CategoryString" -ForegroundColor Red
             Write-Host "Доступные категории: network, system, storage, security, performance, docker, database, web, backup" -ForegroundColor Yellow
         }
     }

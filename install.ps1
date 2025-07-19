@@ -64,10 +64,13 @@ $OSVersion = $OSInfo.Version
 
 # Функция диагностики с разделением по ОС
 function Diagnostika {
-    param([string]$Category = "")
+    param([Parameter(ValueFromRemainingArguments=$true)][string[]]$Category)
+    
+    # Объединяем все аргументы в одну строку
+    $CategoryString = $Category -join " "
     
     # Главное меню
-    if (-not $Category) {
+    if (-not $CategoryString) {
         Write-Host "╔══════════════════════════════════════════════════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
         Write-Host "║                                   Diagnostika v2.0 - Универсальная система                               ║" -ForegroundColor Cyan
         Write-Host "╚══════════════════════════════════════════════════════════════════════════════════════════════════════════╝" -ForegroundColor Cyan
@@ -99,7 +102,7 @@ function Diagnostika {
     }
     
     # Вызываем соответствующую функцию в зависимости от ОС
-    Diagnostika-Windows "$@"
+    Diagnostika-Windows $CategoryString
 }
 
 # Функция для Windows
