@@ -50,19 +50,91 @@ function Diagnostika-Windows {
             Write-Host "6. Ping test" -ForegroundColor White
             Write-Host "7. Traceroute" -ForegroundColor White
             Write-Host "8. Bandwidth test" -ForegroundColor White
+            Write-Host "0. Back to main menu" -ForegroundColor Yellow
+            Write-Host "q. Exit Diagnostika" -ForegroundColor Yellow
             Write-Host ""
-            $choice = Read-Host "Select command (1-8)"
+            $choice = Read-Host "Select command (1-8, 0, q)"
             
             switch ($choice) {
-                "1" { Get-NetAdapter }
-                "2" { Get-NetTCPConnection | Select-Object -First 10 }
-                "3" { Get-NetRoute | Select-Object -First 10 }
-                "4" { Get-DnsClientServerAddress }
-                "5" { Get-NetStatistics }
-                "6" { Test-Connection -ComputerName "8.8.8.8" -Count 3 }
-                "7" { Test-NetConnection -ComputerName "8.8.8.8" -TraceRoute }
-                "8" { Write-Host "Bandwidth test not available in PowerShell" -ForegroundColor Yellow }
-                default { Write-Host "Invalid choice" -ForegroundColor Red }
+                "1" { 
+                    Write-Host "🔧 Executing: Network interfaces" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-NetAdapter | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "network"
+                }
+                "2" { 
+                    Write-Host "🔧 Executing: Network connections" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-NetTCPConnection | Select-Object -First 10 | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "network"
+                }
+                "3" { 
+                    Write-Host "🔧 Executing: Routing table" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-NetRoute | Select-Object -First 10 | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "network"
+                }
+                "4" { 
+                    Write-Host "🔧 Executing: DNS configuration" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-DnsClientServerAddress | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "network"
+                }
+                "5" { 
+                    Write-Host "🔧 Executing: Network statistics" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-NetStatistics | Select-Object -First 10 | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "network"
+                }
+                "6" { 
+                    Write-Host "🔧 Executing: Ping test" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Test-Connection -ComputerName "8.8.8.8" -Count 3
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "network"
+                }
+                "7" { 
+                    Write-Host "🔧 Executing: Traceroute" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Test-NetConnection -ComputerName "8.8.8.8" -TraceRoute
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "network"
+                }
+                "8" { 
+                    Write-Host "🔧 Executing: Bandwidth test" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "Bandwidth test not available in PowerShell" -ForegroundColor Yellow
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "network"
+                }
+                "0" { Diagnostika }
+                "q" { Write-Host "Goodbye!" -ForegroundColor Green; return }
+                default { 
+                    Write-Host "Invalid choice" -ForegroundColor Red
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "network"
+                }
             }
         }
         "system" {
@@ -78,20 +150,100 @@ function Diagnostika-Windows {
             Write-Host "7. Service status" -ForegroundColor White
             Write-Host "8. System logs" -ForegroundColor White
             Write-Host "9. Windows version" -ForegroundColor White
+            Write-Host "0. Back to main menu" -ForegroundColor Yellow
+            Write-Host "q. Exit Diagnostika" -ForegroundColor Yellow
             Write-Host ""
-            $choice = Read-Host "Select command (1-9)"
+            $choice = Read-Host "Select command (1-9, 0, q)"
             
             switch ($choice) {
-                "1" { Get-ComputerInfo | Select-Object WindowsProductName, WindowsVersion, TotalPhysicalMemory }
-                "2" { Get-WmiObject -Class Win32_Processor | Select-Object Name, NumberOfCores, MaxClockSpeed }
-                "3" { Get-WmiObject -Class Win32_OperatingSystem | Select-Object TotalVisibleMemorySize, FreePhysicalMemory }
-                "4" { Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, Size, FreeSpace }
-                "5" { Get-WmiObject -Class Win32_Processor | Select-Object LoadPercentage }
-                "6" { Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 }
-                "7" { Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object -First 10 }
-                "8" { Get-EventLog -LogName System -Newest 10 }
-                "9" { [System.Environment]::OSVersion }
-                default { Write-Host "Invalid choice" -ForegroundColor Red }
+                "1" { 
+                    Write-Host "🔧 Executing: System information" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-ComputerInfo | Select-Object WindowsProductName, WindowsVersion, TotalPhysicalMemory | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "system"
+                }
+                "2" { 
+                    Write-Host "🔧 Executing: Processor information" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-CimInstance -ClassName Win32_Processor | Select-Object Name, NumberOfCores, MaxClockSpeed | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "system"
+                }
+                "3" { 
+                    Write-Host "🔧 Executing: Memory information" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-CimInstance -ClassName Win32_OperatingSystem | Select-Object TotalVisibleMemorySize, FreePhysicalMemory | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "system"
+                }
+                "4" { 
+                    Write-Host "🔧 Executing: Disk usage" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object DeviceID, Size, FreeSpace | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "system"
+                }
+                "5" { 
+                    Write-Host "🔧 Executing: System load" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-CimInstance -ClassName Win32_Processor | Select-Object LoadPercentage | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "system"
+                }
+                "6" { 
+                    Write-Host "🔧 Executing: Top processes" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "system"
+                }
+                "7" { 
+                    Write-Host "🔧 Executing: Service status" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object -First 10 | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "system"
+                }
+                "8" { 
+                    Write-Host "🔧 Executing: System logs" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-WinEvent -LogName System -MaxEvents 10 | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "system"
+                }
+                "9" { 
+                    Write-Host "🔧 Executing: Windows version" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    [System.Environment]::OSVersion
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "system"
+                }
+                "0" { Diagnostika }
+                "q" { Write-Host "Goodbye!" -ForegroundColor Green; return }
+                default { 
+                    Write-Host "Invalid choice" -ForegroundColor Red
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "system"
+                }
             }
         }
         "storage" {
@@ -106,19 +258,91 @@ function Diagnostika-Windows {
             Write-Host "6. Storage pools" -ForegroundColor White
             Write-Host "7. File system info" -ForegroundColor White
             Write-Host "8. Disk performance" -ForegroundColor White
+            Write-Host "0. Back to main menu" -ForegroundColor Yellow
+            Write-Host "q. Exit Diagnostika" -ForegroundColor Yellow
             Write-Host ""
-            $choice = Read-Host "Select command (1-8)"
+            $choice = Read-Host "Select command (1-8, 0, q)"
             
             switch ($choice) {
-                "1" { Get-Partition }
-                "2" { Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, Size, FreeSpace }
-                "3" { Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, VolumeName }
-                "4" { Get-ChildItem C:\ -Recurse -File | Sort-Object Length -Descending | Select-Object -First 10 Name, Length }
-                "5" { Get-WmiObject -Class Win32_DiskDrive | Select-Object Model, Status }
-                "6" { Get-StoragePool -ErrorAction SilentlyContinue }
-                "7" { Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, FileSystem, VolumeName }
-                "8" { Get-Counter "\PhysicalDisk(*)\% Disk Time" -SampleInterval 1 -MaxSamples 3 }
-                default { Write-Host "Invalid choice" -ForegroundColor Red }
+                "1" { 
+                    Write-Host "🔧 Executing: Disk partitions" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-Partition | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "storage"
+                }
+                "2" { 
+                    Write-Host "🔧 Executing: Disk usage" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object DeviceID, Size, FreeSpace | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "storage"
+                }
+                "3" { 
+                    Write-Host "🔧 Executing: Mount points" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object DeviceID, VolumeName | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "storage"
+                }
+                "4" { 
+                    Write-Host "🔧 Executing: Large files" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-ChildItem C:\ -Recurse -File -ErrorAction SilentlyContinue | Sort-Object Length -Descending | Select-Object -First 10 Name, Length | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "storage"
+                }
+                "5" { 
+                    Write-Host "🔧 Executing: Disk health" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-CimInstance -ClassName Win32_DiskDrive | Select-Object Model, Status | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "storage"
+                }
+                "6" { 
+                    Write-Host "🔧 Executing: Storage pools" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-StoragePool -ErrorAction SilentlyContinue | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "storage"
+                }
+                "7" { 
+                    Write-Host "🔧 Executing: File system info" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-CimInstance -ClassName Win32_LogicalDisk | Select-Object DeviceID, FileSystem, VolumeName | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "storage"
+                }
+                "8" { 
+                    Write-Host "🔧 Executing: Disk performance" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-Counter "\PhysicalDisk(*)\% Disk Time" -SampleInterval 1 -MaxSamples 3
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "storage"
+                }
+                "0" { Diagnostika }
+                "q" { Write-Host "Goodbye!" -ForegroundColor Green; return }
+                default { 
+                    Write-Host "Invalid choice" -ForegroundColor Red
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "storage"
+                }
             }
         }
         "security" {
@@ -133,19 +357,91 @@ function Diagnostika-Windows {
             Write-Host "6. Windows Firewall" -ForegroundColor White
             Write-Host "7. Antivirus status" -ForegroundColor White
             Write-Host "8. Security events" -ForegroundColor White
+            Write-Host "0. Back to main menu" -ForegroundColor Yellow
+            Write-Host "q. Exit Diagnostika" -ForegroundColor Yellow
             Write-Host ""
-            $choice = Read-Host "Select command (1-8)"
+            $choice = Read-Host "Select command (1-8, 0, q)"
             
             switch ($choice) {
-                "1" { Get-NetTCPConnection | Where-Object {$_.State -eq "Listen"} | Select-Object -First 10 }
-                "2" { Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object -First 10 }
-                "3" { Get-LocalUser }
-                "4" { Get-LocalGroupMember -Group "Administrators" }
-                "5" { Get-EventLog -LogName Security -InstanceId 4625 -Newest 10 }
-                "6" { Get-NetFirewallProfile }
-                "7" { Get-WmiObject -Namespace root\SecurityCenter2 -Class AntiVirusProduct }
-                "8" { Get-EventLog -LogName Security -Newest 10 }
-                default { Write-Host "Invalid choice" -ForegroundColor Red }
+                "1" { 
+                    Write-Host "🔧 Executing: Open ports" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-NetTCPConnection | Where-Object {$_.State -eq "Listen"} | Select-Object -First 10 | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "security"
+                }
+                "2" { 
+                    Write-Host "🔧 Executing: Listening services" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object -First 10 | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "security"
+                }
+                "3" { 
+                    Write-Host "🔧 Executing: User accounts" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-LocalUser | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "security"
+                }
+                "4" { 
+                    Write-Host "🔧 Executing: Local administrators" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-LocalGroupMember -Group "Administrators" | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "security"
+                }
+                "5" { 
+                    Write-Host "🔧 Executing: Failed logins" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-WinEvent -LogName Security -FilterXPath "*[System[EventID=4625]]" -MaxEvents 10 | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "security"
+                }
+                "6" { 
+                    Write-Host "🔧 Executing: Windows Firewall" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-NetFirewallProfile | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "security"
+                }
+                "7" { 
+                    Write-Host "🔧 Executing: Antivirus status" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-CimInstance -Namespace root\SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction SilentlyContinue | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "security"
+                }
+                "8" { 
+                    Write-Host "🔧 Executing: Security events" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-WinEvent -LogName Security -MaxEvents 10 | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "security"
+                }
+                "0" { Diagnostika }
+                "q" { Write-Host "Goodbye!" -ForegroundColor Green; return }
+                default { 
+                    Write-Host "Invalid choice" -ForegroundColor Red
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "security"
+                }
             }
         }
         "performance" {
@@ -160,19 +456,91 @@ function Diagnostika-Windows {
             Write-Host "6. Network usage" -ForegroundColor White
             Write-Host "7. System resources" -ForegroundColor White
             Write-Host "8. Performance counters" -ForegroundColor White
+            Write-Host "0. Back to main menu" -ForegroundColor Yellow
+            Write-Host "q. Exit Diagnostika" -ForegroundColor Yellow
             Write-Host ""
-            $choice = Read-Host "Select command (1-8)"
+            $choice = Read-Host "Select command (1-8, 0, q)"
             
             switch ($choice) {
-                "1" { Get-Counter "\Processor(_Total)\% Processor Time" -SampleInterval 1 -MaxSamples 3 }
-                "2" { Get-Counter "\Memory\Available MBytes" -SampleInterval 1 -MaxSamples 3 }
-                "3" { Get-WmiObject -Class Win32_Processor | Select-Object LoadPercentage }
-                "4" { Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 }
-                "5" { Get-Counter "\PhysicalDisk(*)\% Disk Time" -SampleInterval 1 -MaxSamples 3 }
-                "6" { Get-Counter "\Network Interface(*)\Bytes Total/sec" -SampleInterval 1 -MaxSamples 3 }
-                "7" { Get-WmiObject -Class Win32_OperatingSystem | Select-Object TotalVisibleMemorySize, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory }
-                "8" { Get-Counter "\System\Processor Queue Length" -SampleInterval 1 -MaxSamples 3 }
-                default { Write-Host "Invalid choice" -ForegroundColor Red }
+                "1" { 
+                    Write-Host "🔧 Executing: CPU usage" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-Counter "\Processor(_Total)\% Processor Time" -SampleInterval 1 -MaxSamples 3
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "performance"
+                }
+                "2" { 
+                    Write-Host "🔧 Executing: Memory usage" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-Counter "\Memory\Available MBytes" -SampleInterval 1 -MaxSamples 3
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "performance"
+                }
+                "3" { 
+                    Write-Host "🔧 Executing: System load" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-CimInstance -ClassName Win32_Processor | Select-Object LoadPercentage | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "performance"
+                }
+                "4" { 
+                    Write-Host "🔧 Executing: Top processes" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "performance"
+                }
+                "5" { 
+                    Write-Host "🔧 Executing: Disk I/O" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-Counter "\PhysicalDisk(*)\% Disk Time" -SampleInterval 1 -MaxSamples 3
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "performance"
+                }
+                "6" { 
+                    Write-Host "🔧 Executing: Network usage" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-Counter "\Network Interface(*)\Bytes Total/sec" -SampleInterval 1 -MaxSamples 3
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "performance"
+                }
+                "7" { 
+                    Write-Host "🔧 Executing: System resources" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-CimInstance -ClassName Win32_OperatingSystem | Select-Object TotalVisibleMemorySize, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory | Format-Table -AutoSize
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "performance"
+                }
+                "8" { 
+                    Write-Host "🔧 Executing: Performance counters" -ForegroundColor Green
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Get-Counter "\System\Processor Queue Length" -SampleInterval 1 -MaxSamples 3
+                    Write-Host "================================================================" -ForegroundColor Cyan
+                    Write-Host "✅ Command completed" -ForegroundColor Green
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "performance"
+                }
+                "0" { Diagnostika }
+                "q" { Write-Host "Goodbye!" -ForegroundColor Green; return }
+                default { 
+                    Write-Host "Invalid choice" -ForegroundColor Red
+                    Read-Host "Press Enter to continue"
+                    Diagnostika-Windows "performance"
+                }
             }
         }
         default {
