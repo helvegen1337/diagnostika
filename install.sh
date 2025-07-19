@@ -558,27 +558,7 @@ export -f diagnostika_linux
 export -f diagnostika_windows
 
 
-echo "Доступные команды:"
-echo "  diagnostika    - Показать главное меню"
-echo "  diag           - То же самое (сокращение)"
-echo "  help           - То же самое"
-echo "  menu           - То же самое"
-echo ""
-echo "Быстрый доступ:"
-echo "  diag network   - Диагностика сети (12 команд)"
-echo "  diag system    - Системная информация (15 команд)"
-echo "  diag storage   - Анализ хранилища (12 команд)"
-echo "  diag security  - Проверка безопасности (12 команд)"
-echo "  diag performance - Мониторинг производительности (12 команд)"
-echo "  diag docker    - Статус Docker (12 команд)"
-echo "  diag database  - Статус баз данных (10 команд)"
-echo "  diag web       - Веб-сервисы (10 команд)"
-echo "  diag backup    - Статус резервного копирования (8 команд)"
-echo "  diag services  - Системные службы (10 команд)"
-echo "  diag processes - Процессы и процессы (10 команд)"
-echo "  diag monitoring - Мониторинг системы (8 команд)"
-echo ""
-echo "Использование: Просто введите 'diag' или 'help' для начала!"
+
 EOF
 
 # Делаем скрипт исполняемым
