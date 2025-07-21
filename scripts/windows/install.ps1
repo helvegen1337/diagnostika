@@ -52,7 +52,7 @@ Write-ColorOutput "📋 Скачиваем файлы с GitHub..." $Blue
 
 Write-ColorOutput "📥 Скачиваем powershell_universal.ps1..." $Blue
 try {
-    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/powershell_universal.ps1" -OutFile "$InstallDir\powershell_universal.ps1" -UseBasicParsing
+    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/scripts/windows/powershell_universal.ps1" -OutFile "$InstallDir\powershell_universal.ps1" -UseBasicParsing
 } catch {
     Write-ColorOutput "❌ Ошибка: Не удалось скачать powershell_universal.ps1" $Red
     exit 1
@@ -60,7 +60,7 @@ try {
 
 Write-ColorOutput "📥 Скачиваем diagnostika_v2.py..." $Blue
 try {
-    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/diagnostika_v2.py" -OutFile "$InstallDir\diagnostika_v2.py" -UseBasicParsing
+    Invoke-WebRequest -Uri "https://raw.githubusercontent.com/helvegen1337/diagnostika/main/checklist/diagnostika_v2.py" -OutFile "$InstallDir\diagnostika_v2.py" -UseBasicParsing
 } catch {
     Write-ColorOutput "❌ Ошибка: Не удалось скачать diagnostika_v2.py" $Red
     exit 1
